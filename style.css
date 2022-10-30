@@ -34,7 +34,9 @@
   margin: 0 auto 0;
 }
 
-.task__name {
+.task__name,
+.new-task__input,
+.task__input {
   width: 56%;
   display: inline-block;
   flex-grow: 1;
