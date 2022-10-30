@@ -8,9 +8,9 @@
 
 // Event handling, user interaction is what starts the code execution.
 
-var taskInput=document.getElementById("new-task");//Add a new task.
+var taskInput=document.querySelector(".new-task__input");//Add a new task.
 var addButton=document.getElementsByTagName("button")[0];//first button
-var incompleteTaskHolder=document.getElementById("incompleteTasks");//ul of #incompleteTasks
+var incompleteTaskHolder=document.querySelector(".incomplete-tasks__list");//ul of #incompleteTasks
 var completedTasksHolder=document.getElementById("completed-tasks");//completed-tasks
 
 
@@ -33,18 +33,22 @@ var createNewTaskElement=function(taskString){
     var deleteButtonImg=document.createElement("img");//delete button image
 
     label.innerText=taskString;
-    label.className='task';
+    label.className='task__name';
 
     //Each elements, needs appending
+    listItem.className = 'task';
     checkBox.type="checkbox";
+    checkBox.className = "checkbox";
     editInput.type="text";
-    editInput.className="task";
+    editInput.className="task__input";
 
     editButton.innerText="Edit"; //innerText encodes special characters, HTML does not.
-    editButton.className="edit";
-
-    deleteButton.className="delete";
+    editButton.className="button button-edit";
+    
+    deleteButton.className="button button_delete";
     deleteButtonImg.src='./remove.svg';
+    deleteButtonImg.className="button__img"
+    deleteButtonImg.alt=""
     deleteButton.appendChild(deleteButtonImg);
 
 
@@ -56,7 +60,6 @@ var createNewTaskElement=function(taskString){
     listItem.appendChild(deleteButton);
     return listItem;
 }
-
 
 
 var addTask=function(){
@@ -79,12 +82,11 @@ var editTask=function(){
     console.log("Edit Task...");
     console.log("Change 'edit' to 'save'");
 
-
     var listItem=this.parentNode;
 
     var editInput=listItem.querySelector('input[type=text]');
     var label=listItem.querySelector("label");
-    var editBtn=listItem.querySelector(".edit");
+    var editBtn=listItem.querySelector(".button-edit");
     var containsClass=listItem.classList.contains("editMode");
     //If class of the parent is .editmode
     if(containsClass){
@@ -111,7 +113,6 @@ var deleteTask=function(){
     var ul=listItem.parentNode;
     //Remove the parent list item from the ul.
     ul.removeChild(listItem);
-
 }
 
 
@@ -123,7 +124,6 @@ var taskCompleted=function(){
     var listItem=this.parentNode;
     completedTasksHolder.appendChild(listItem);
     bindTaskEvents(listItem, taskIncomplete);
-
 }
 
 
@@ -136,7 +136,6 @@ var taskIncomplete=function(){
     incompleteTaskHolder.appendChild(listItem);
     bindTaskEvents(listItem,taskCompleted);
 }
-
 
 
 var ajaxRequest=function(){
@@ -156,8 +155,8 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
     console.log("bind list item events");
 //select ListItems children
     var checkBox=taskListItem.querySelector("input[type=checkbox]");
-    var editButton=taskListItem.querySelector("button.edit");
-    var deleteButton=taskListItem.querySelector("button.delete");
+    var editButton=taskListItem.querySelector(".button-edit");
+    var deleteButton=taskListItem.querySelector(".button_delete");
 
 
     //Bind editTask to edit button.
@@ -177,15 +176,11 @@ for (var i=0; i<incompleteTaskHolder.children.length;i++){
 }
 
 
-
-
 //cycle over completedTasksHolder ul list items
 for (var i=0; i<completedTasksHolder.children.length;i++){
     //bind events to list items chldren(tasksIncompleted)
     bindTaskEvents(completedTasksHolder.children[i],taskIncomplete);
 }
-
-
 
 
 // Issues with usability don't get seen until they are in front of a human tester.
